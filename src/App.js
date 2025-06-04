@@ -25,10 +25,8 @@ function App() {
     const protein = w * 1.2 * 7;
     const fat = (weeklyCalories * 0.25) / 9;
     const carbs = (weeklyCalories * 0.5) / 4;
-    const vitamins = 'バランス良く摂取';
-    const minerals = '必要量を満たすよう調整';
 
-    setResults({ protein, fat, carbs, vitamins, minerals });
+    setResults({ protein, fat, carbs});
   };
 
   return (
@@ -58,8 +56,6 @@ function App() {
             <li>タンパク質: {results.protein.toFixed(1)} g</li>
             <li>脂質: {results.fat.toFixed(1)} g</li>
             <li>炭水化物: {results.carbs.toFixed(1)} g</li>
-            <li>ビタミン: {results.vitamins}</li>
-            <li>ミネラル: {results.minerals}</li>
           </ul>
         </div>
       )}
