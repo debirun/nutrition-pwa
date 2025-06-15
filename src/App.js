@@ -3,16 +3,13 @@ import React, { useState } from 'react';
 import './App.css';
 
 const aminoAcidNames = {
-  histidine: 'ヒスチジン',
-  isoleucine: 'イソロイシン',
-  leucine: 'ロイシン',
-  lysine: 'リシン',
-  methionine: 'メチオニン',
-  phenylalanine: 'フェニルアラニン',
-  threonine: 'トレオニン',
-  tryptophan: 'トリプトファン',
-  valine: 'バリン'
+  histidine: 'ヒスチジン', isoleucine: 'イソロイシン', leucine: 'ロイシン', lysine: 'リシン',
+  methionine: 'メチオニン', phenylalanine: 'フェニルアラニン', threonine: 'トレオニン',
+  tryptophan: 'トリプトファン', valine: 'バリン'
 };
+
+const vitaminUnit = { A: 'μg', D: 'μg', E: 'mg', K: 'μg', B1: 'mg', B2: 'mg', C: 'mg', B3: 'mg', B6: 'mg', B12: 'μg', B9: 'μg', B5: 'mg', H: 'μg' };
+const mineralUnit = { Ca: 'mg', Mg: 'mg', Fe: 'mg', Zn: 'mg', Cu: 'mg', Mn: 'mg', I: 'μg', Se: 'μg', K: 'mg', P: 'mg', Cr: 'μg', Mo: 'μg' };
 
 const aminoAcidReference = [
   { ageMin: 0, ageMax: 0.6, data: { histidine: 22, isoleucine: 36, leucine: 73, lysine: 63, methionine: 31, phenylalanine: 59, threonine: 35, tryptophan: 9.5, valine: 48 } },
@@ -23,16 +20,8 @@ const aminoAcidReference = [
   { ageMin: 18, ageMax: 120, data: { histidine: 10, isoleucine: 20, leucine: 39, lysine: 30, methionine: 15, phenylalanine: 25, threonine: 15, tryptophan: 4.0, valine: 26 } },
 ];
 
-const vitaminReference = [
-  { ageMin: 1, ageMax: 2, male: { A: 400, D: 3, E: 3, K: 50, B1: 0.5, B2: 0.6, C: 40, B3: 6, B6: 0.5, B12: 0.9, B9: 90, B5: 3, H: 20 }, female: { A: 350, D: 3.5, E: 3, K: 60, B1: 0.5, B2: 0.5, C: 40, B3: 5, B6: 0.5, B12: 0.9, B9: 90, B5: 4, H: 20 } },
-  { ageMin: 3, ageMax: 5, male: { A: 450, D: 3.5, E: 4, K: 60, B1: 0.7, B2: 0.8, C: 50, B3: 8, B6: 0.6, B12: 1.1, B9: 110, B5: 4, H: 20 }, female: { A: 400, D: 4, E: 4, K: 70, B1: 0.7, B2: 0.8, C: 50, B3: 7, B6: 0.6, B12: 1.1, B9: 110, B5: 4, H: 20 } },
-  { ageMin: 6, ageMax: 7, male: { A: 600, D: 4.5, E: 5, K: 80, B1: 0.8, B2: 0.9, C: 60, B3: 9, B6: 0.8, B12: 1.3, B9: 140, B5: 5, H: 30 }, female: { A: 550, D: 5, E: 5, K: 90, B1: 0.8, B2: 0.9, C: 60, B3: 8, B6: 0.7, B12: 1.3, B9: 140, B5: 5, H: 30 } },
-  { ageMin: 8, ageMax: 9, male: { A: 600, D: 5, E: 5, K: 90, B1: 1.0, B2: 1.1, C: 70, B3: 11, B6: 0.9, B12: 1.6, B9: 160, B5: 6, H: 30 }, female: { A: 550, D: 6, E: 5, K: 110, B1: 0.9, B2: 1.0, C: 70, B3: 10, B6: 0.9, B12: 1.6, B9: 160, B5: 6, H: 30 } },
-  { ageMin: 10, ageMax: 11, male: { A: 600, D: 6.5, E: 5.5, K: 110, B1: 1.2, B2: 1.4, C: 85, B3: 13, B6: 1.1, B12: 1.9, B9: 200, B5: 6, H: 40 }, female: { A: 550, D: 8, E: 5.5, K: 140, B1: 1.1, B2: 1.3, C: 85, B3: 12, B6: 1.1, B12: 1.9, B9: 200, B5: 6, H: 40 } },
-  { ageMin: 12, ageMax: 14, male: { A: 800, D: 8, E: 6.5, K: 140, B1: 1.4, B2: 1.6, C: 100, B3: 15, B6: 1.4, B12: 2.4, B9: 240, B5: 7, H: 50 }, female: { A: 700, D: 9.5, E: 6, K: 170, B1: 1.3, B2: 1.4, C: 100, B3: 14, B6: 1.3, B12: 2.4, B9: 240, B5: 6, H: 50 } },
-  { ageMin: 15, ageMax: 17, male: { A: 900, D: 9, E: 7, K: 160, B1: 1.5, B2: 1.7, C: 100, B3: 17, B6: 1.5, B12: 2.4, B9: 240, B5: 7, H: 50 }, female: { A: 650, D: 8.5, E: 5.5, K: 150, B1: 1.2, B2: 1.4, C: 100, B3: 13, B6: 1.3, B12: 2.4, B9: 240, B5: 6, H: 50 } },
-  { ageMin: 18, ageMax: 120, male: { A: 900, D: 8.5, E: 6, K: 150, B1: 1.2, B2: 1.6, C: 100, B3: 15, B6: 1.4, B12: 2.4, B9: 240, B5: 5, H: 50 }, female: { A: 700, D: 8.5, E: 5.5, K: 150, B1: 1.1, B2: 1.2, C: 100, B3: 12, B6: 1.1, B12: 2.4, B9: 240, B5: 5, H: 50 } }
-];
+import { vitaminReference } from './data/vitamins';
+import { mineralReference } from './data/minerals';
 
 function App() {
   const [gender, setGender] = useState('male');
@@ -47,9 +36,7 @@ function App() {
     const a = parseFloat(age);
     if (isNaN(w) || isNaN(h) || isNaN(a)) return;
 
-    const bmr = gender === 'male'
-      ? 10 * w + 6.25 * h - 5 * a + 5
-      : 10 * w + 6.25 * h - 5 * a - 161;
+    const bmr = gender === 'male' ? 10 * w + 6.25 * h - 5 * a + 5 : 10 * w + 6.25 * h - 5 * a - 161;
     const dailyCalories = bmr * 1.5;
     const weeklyCalories = dailyCalories * 7;
 
@@ -61,17 +48,17 @@ function App() {
     const carbsWeek = carbsDay * 7;
 
     const aminoStandard = aminoAcidReference.find(ref => a >= ref.ageMin && a <= ref.ageMax)?.data || {};
-    const aminoAcids = Object.fromEntries(Object.entries(aminoStandard).map(([key, val]) => {
-      return [key, { perDay: val * w, perWeek: val * w * 7 }];
-    }));
+    const aminoAcids = Object.fromEntries(Object.entries(aminoStandard).map(([key, val]) => [key, { perDay: val * w, perWeek: val * w * 7 }]));
 
     const vitaminStandard = vitaminReference.find(ref => a >= ref.ageMin && a <= ref.ageMax);
     const vitaminValues = vitaminStandard ? vitaminStandard[gender] : {};
-    const vitamins = Object.fromEntries(Object.entries(vitaminValues).map(([key, val]) => {
-      return [key, { perDay: val, perWeek: val * 7 }];
-    }));
+    const vitamins = Object.fromEntries(Object.entries(vitaminValues).map(([key, val]) => [key, { perDay: val, perWeek: val * 7 }]));
 
-    setResults({ proteinDay, proteinWeek, fatDay, fatWeek, carbsDay, carbsWeek, aminoAcids, vitamins });
+    const mineralStandard = mineralReference.find(ref => a >= ref.ageMin && a <= ref.ageMax);
+    const mineralValues = mineralStandard ? mineralStandard[gender] : {};
+    const minerals = Object.fromEntries(Object.entries(mineralValues).map(([key, val]) => [key, { perDay: val, perWeek: val * 7 }]));
+
+    setResults({ proteinDay, proteinWeek, fatDay, fatWeek, carbsDay, carbsWeek, aminoAcids, vitamins, minerals });
   };
 
   return (
@@ -115,7 +102,13 @@ function App() {
           <h3>ビタミン必要量</h3>
           <ul>
             {Object.entries(results.vitamins).map(([name, val]) => (
-              <li key={name}>ビタミン{name}：{val.perDay}{name === 'A' || name === 'K' || name === 'B12' || name === 'H' ? 'μg' : 'mg'} / 日・{val.perWeek}{name === 'A' || name === 'K' || name === 'B12' || name === 'H' ? 'μg' : 'mg'} / 週</li>
+              <li key={name}>ビタミン{name}：{val.perDay}{vitaminUnit[name]} / 日・{val.perWeek}{vitaminUnit[name]} / 週</li>
+            ))}
+          </ul>
+          <h3>ミネラル必要量</h3>
+          <ul>
+            {Object.entries(results.minerals).map(([name, val]) => (
+              <li key={name}>{name}：{val.perDay}{mineralUnit[name]} / 日・{val.perWeek}{mineralUnit[name]} / 週</li>
             ))}
           </ul>
         </div>
