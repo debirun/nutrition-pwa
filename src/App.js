@@ -2,7 +2,18 @@
 import React, { useState } from 'react';
 import './App.css';
 
-// 年齢ごとのアミノ酸基準値（mg/kg体重/日）
+const aminoAcidNames = {
+  histidine: 'ヒスチジン',
+  isoleucine: 'イソロイシン',
+  leucine: 'ロイシン',
+  lysine: 'リシン',
+  methionine: 'メチオニン',
+  phenylalanine: 'フェニルアラニン',
+  threonine: 'トレオニン',
+  tryptophan: 'トリプトファン',
+  valine: 'バリン'
+};
+
 const aminoAcidReference = [
   { ageMin: 0, ageMax: 0.6, data: { histidine: 22, isoleucine: 36, leucine: 73, lysine: 63, methionine: 31, phenylalanine: 59, threonine: 35, tryptophan: 9.5, valine: 48 } },
   { ageMin: 1, ageMax: 2, data: { histidine: 15, isoleucine: 27, leucine: 54, lysine: 44, methionine: 22, phenylalanine: 40, threonine: 24, tryptophan: 6.4, valine: 36 } },
@@ -81,7 +92,7 @@ function App() {
           <h3>必須アミノ酸（mg）</h3>
           <ul>
             {Object.entries(results.aminoAcids).map(([name, val]) => (
-              <li key={name}>{name}：{val.perDay.toFixed(1)} mg / 日・{val.perWeek.toFixed(1)} mg / 週</li>
+              <li key={name}>{aminoAcidNames[name] || name}：{val.perDay.toFixed(1)} mg / 日・{val.perWeek.toFixed(1)} mg / 週</li>
             ))}
           </ul>
         </div>
