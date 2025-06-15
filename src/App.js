@@ -1,6 +1,8 @@
 // nutrition-pwa/src/App.js
 import React, { useState } from 'react';
 import './App.css';
+import AminoAcidTable from './components/AminoAcidTable';
+
 
 function App() {
   const [gender, setGender] = useState('male');
@@ -59,6 +61,7 @@ function App() {
           </ul>
         </div>
       )}
+      <AminoAcidTable />
     </div>
   );
 }
