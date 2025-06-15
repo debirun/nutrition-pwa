@@ -14,44 +14,46 @@ const AminoAcidTable = () => {
   return (
     <div>
       <h2>年齢別 タンパク質とアミノ酸必要量</h2>
-      <table border="1" cellPadding="4" style={{ borderCollapse: 'collapse', width: '100%' }}>
-        <thead>
-          <tr>
-            <th>年齢</th>
-            <th>維持量</th>
-            <th>成長量</th>
-            <th>ヒスチジン</th>
-            <th>イソロイシン</th>
-            <th>ロイシン</th>
-            <th>リシン</th>
-            <th>含硫アミノ酸</th>
-            <th>芳香族アミノ酸</th>
-            <th>トレオニン</th>
-            <th>トリプトファン</th>
-            <th>バリン</th>
-            <th>合計</th>
-          </tr>
-        </thead>
-        <tbody>
-          {aminoAcidData.map((row, idx) => (
-            <tr key={idx}>
-              <td>{row.age}</td>
-              <td>{row.maintenance}</td>
-              <td>{row.growth}</td>
-              <td>{row.histidine}</td>
-              <td>{row.isoleucine}</td>
-              <td>{row.leucine}</td>
-              <td>{row.lysine}</td>
-              <td>{row.sulfurAAs}</td>
-              <td>{row.aromaticAAs}</td>
-              <td>{row.threonine}</td>
-              <td>{row.tryptophan}</td>
-              <td>{row.valine}</td>
-              <td>{row.total}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div style={{ overflowX: 'auto' }}>
+          <table border="1" cellPadding="4" style={{ borderCollapse: 'collapse', width: '100%', minWidth: '800px' }}>
+            <thead>
+              <tr>
+                <th>年齢</th>
+                <th>維持量</th>
+                <th>成長量</th>
+                <th>ヒスチジン</th>
+                <th>イソロイシン</th>
+                <th>ロイシン</th>
+                <th>リシン</th>
+                <th>含硫アミノ酸</th>
+                <th>芳香族アミノ酸</th>
+                <th>トレオニン</th>
+                <th>トリプトファン</th>
+                <th>バリン</th>
+                <th>合計</th>
+              </tr>
+            </thead>
+            <tbody>
+              {aminoAcidData.map((row, idx) => (
+                <tr key={idx}>
+                  <td>{row.age}</td>
+                  <td>{row.maintenance}</td>
+                  <td>{row.growth}</td>
+                  <td>{row.histidine}</td>
+                  <td>{row.isoleucine}</td>
+                  <td>{row.leucine}</td>
+                  <td>{row.lysine}</td>
+                  <td>{row.sulfurAAs}</td>
+                  <td>{row.aromaticAAs}</td>
+                  <td>{row.threonine}</td>
+                  <td>{row.tryptophan}</td>
+                  <td>{row.valine}</td>
+                  <td>{row.total}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
     </div>
   );
 };
