@@ -6,9 +6,10 @@ import './App.css';
 import { vitaminReference } from './data/vitamins';
 import { mineralReference } from './data/minerals';
 import { Bar } from 'react-chartjs-2';
-//import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
+import annotationPlugin from 'chartjs-plugin-annotation';
 
-ChartJS.register(BarElement, CategoryScale, LinearScale);
+ChartJS.register(BarElement, CategoryScale, LinearScale, annotationPlugin);
 
 const aminoAcidNames = {
   histidine: 'ヒスチジン', isoleucine: 'イソロイシン', leucine: 'ロイシン', lysine: 'リシン',
@@ -84,6 +85,48 @@ function App() {
         y: {
           beginAtZero: true,
           title: { display: true, text: 'g' }
+        }
+      },
+      plugins: {
+        annotation: {
+          annotations: {
+            proteinLine: {
+              type: 'line',
+              yMin: results.proteinDay,
+              yMax: results.proteinDay,
+              borderColor: 'rgba(255,99,132,1)',
+              borderWidth: 2,
+              label: {
+                content: '必要タンパク質量',
+                enabled: true,
+                position: 'end'
+              }
+            },
+            fatLine: {
+              type: 'line',
+              yMin: results.fatDay,
+              yMax: results.fatDay,
+              borderColor: 'rgba(54,162,235,1)',
+              borderWidth: 2,
+              label: {
+                content: '必要脂質量',
+                enabled: true,
+                position: 'end'
+              }
+            },
+            carbsLine: {
+              type: 'line',
+              yMin: results.carbsDay,
+              yMax: results.carbsDay,
+              borderColor: 'rgba(75,192,192,1)',
+              borderWidth: 2,
+              label: {
+                content: '必要炭水化物量',
+                enabled: true,
+                position: 'end'
+              }
+            }
+          }
         }
       }
     };
