@@ -8,6 +8,8 @@ import { mineralReference } from './data/minerals';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import FoodSelector from './components/FoodSelector';
+import NutritionGraph from './components/NutritionGraph';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, annotationPlugin);
 
@@ -57,82 +59,6 @@ function App() {
     setResults({ proteinDay, proteinWeek, fatDay, fatWeek, carbsDay, carbsWeek });
   };
 
-  const renderGraph = () => {
-    if (!results) return null;
-    const days = ['月','火','水','木','金','土','日'];
-    const data = {
-      labels: days,
-      datasets: [
-        {
-          label: '摂取タンパク質 (g)',
-          data: days.map(() => parseFloat(intake.protein) || 0),
-          backgroundColor: 'rgba(255, 99, 132, 0.5)'
-        },
-        {
-          label: '摂取脂質 (g)',
-          data: days.map(() => parseFloat(intake.fat) || 0),
-          backgroundColor: 'rgba(54, 162, 235, 0.5)'
-        },
-        {
-          label: '摂取炭水化物 (g)',
-          data: days.map(() => parseFloat(intake.carbs) || 0),
-          backgroundColor: 'rgba(75, 192, 192, 0.5)'
-        }
-      ]
-    };
-    const options = {
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: { display: true, text: 'g' }
-        }
-      },
-      plugins: {
-        annotation: {
-          annotations: {
-            proteinLine: {
-              type: 'line',
-              yMin: results.proteinDay,
-              yMax: results.proteinDay,
-              borderColor: 'rgba(255,99,132,1)',
-              borderWidth: 2,
-              label: {
-                content: '必要タンパク質量',
-                enabled: true,
-                position: 'end'
-              }
-            },
-            fatLine: {
-              type: 'line',
-              yMin: results.fatDay,
-              yMax: results.fatDay,
-              borderColor: 'rgba(54,162,235,1)',
-              borderWidth: 2,
-              label: {
-                content: '必要脂質量',
-                enabled: true,
-                position: 'end'
-              }
-            },
-            carbsLine: {
-              type: 'line',
-              yMin: results.carbsDay,
-              yMax: results.carbsDay,
-              borderColor: 'rgba(75,192,192,1)',
-              borderWidth: 2,
-              label: {
-                content: '必要炭水化物量',
-                enabled: true,
-                position: 'end'
-              }
-            }
-          }
-        }
-      }
-    };
-    return <Bar data={data} options={options} />;
-  };
-
   return (
     <div className="App">
       <h1>1週間の栄養素計算</h1>
@@ -165,21 +91,9 @@ function App() {
             <li>脂質: {results.fatDay.toFixed(1)} g / 日・{results.fatWeek.toFixed(1)} g / 週</li>
             <li>炭水化物: {results.carbsDay.toFixed(1)} g / 日・{results.carbsWeek.toFixed(1)} g / 週</li>
           </ul>
-          <h3>実際の1日あたり摂取量（仮入力）</h3>
-          <div>
-            <label>タンパク質（g）</label>
-            <input type="number" value={intake.protein} onChange={(e) => setIntake({ ...intake, protein: e.target.value })} />
-          </div>
-          <div>
-            <label>脂質（g）</label>
-            <input type="number" value={intake.fat} onChange={(e) => setIntake({ ...intake, fat: e.target.value })} />
-          </div>
-          <div>
-            <label>炭水化物（g）</label>
-            <input type="number" value={intake.carbs} onChange={(e) => setIntake({ ...intake, carbs: e.target.value })} />
-          </div>
-          <h3>摂取量（1週間）と必要量の比較</h3>
-          {renderGraph()}
+
+          <NutritionGraph results={results} intake={intake} />
+          <FoodSelector />
         </>
       )}
     </div>
