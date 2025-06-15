@@ -8,7 +8,7 @@ import { mineralReference } from './data/minerals';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
-import FoodSelector from './components/FoodSelector';
+import FoodSearch from './components/FoodSearch';
 import NutritionGraph from './components/NutritionGraph';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, annotationPlugin);
@@ -93,7 +93,7 @@ function App() {
           </ul>
 
           <NutritionGraph results={results} intake={intake} />
-          <FoodSelector />
+          <FoodSearch />
         </>
       )}
     </div>
