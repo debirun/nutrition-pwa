@@ -1,14 +1,8 @@
-// このCanvasには src/App.js の内容だけを保持します。その他のファイルは別Canvasで管理します。
-
 // src/App.js
 import React, { useState } from 'react';
 import './App.css';
 import { vitaminReference } from './data/vitamins';
 import { mineralReference } from './data/minerals';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
-
-ChartJS.register(BarElement, CategoryScale, LinearScale);
 
 const aminoAcidNames = {
   histidine: 'ヒスチジン', isoleucine: 'イソロイシン', leucine: 'ロイシン', lysine: 'リシン',
@@ -34,7 +28,6 @@ function App() {
   const [height, setHeight] = useState('');
   const [age, setAge] = useState('');
   const [results, setResults] = useState(null);
-  const [intake, setIntake] = useState({ protein: '', fat: '', carbs: '' });
 
   const calculateNutrition = () => {
     const w = parseFloat(weight);
@@ -53,41 +46,18 @@ function App() {
     const carbsDay = (dailyCalories * 0.5) / 4;
     const carbsWeek = carbsDay * 7;
 
-    setResults({ proteinDay, proteinWeek, fatDay, fatWeek, carbsDay, carbsWeek });
-  };
+    const aminoStandard = aminoAcidReference.find(ref => a >= ref.ageMin && a <= ref.ageMax)?.data || {};
+    const aminoAcids = Object.fromEntries(Object.entries(aminoStandard).map(([key, val]) => [key, { perDay: val * w, perWeek: val * w * 7 }]));
 
-  const renderGraph = () => {
-    if (!results) return null;
-    const days = ['月','火','水','木','金','土','日'];
-    const data = {
-      labels: days,
-      datasets: [
-        {
-          label: '摂取タンパク質 (g)',
-          data: days.map(() => parseFloat(intake.protein) || 0),
-          backgroundColor: 'rgba(255, 99, 132, 0.5)'
-        },
-        {
-          label: '摂取脂質 (g)',
-          data: days.map(() => parseFloat(intake.fat) || 0),
-          backgroundColor: 'rgba(54, 162, 235, 0.5)'
-        },
-        {
-          label: '摂取炭水化物 (g)',
-          data: days.map(() => parseFloat(intake.carbs) || 0),
-          backgroundColor: 'rgba(75, 192, 192, 0.5)'
-        }
-      ]
-    };
-    const options = {
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: { display: true, text: 'g' }
-        }
-      }
-    };
-    return <Bar data={data} options={options} />;
+    const vitaminStandard = vitaminReference.find(ref => a >= ref.ageMin && a <= ref.ageMax);
+    const vitaminValues = vitaminStandard ? vitaminStandard[gender] : {};
+    const vitamins = Object.fromEntries(Object.entries(vitaminValues).map(([key, val]) => [key, { perDay: val, perWeek: val * 7 }]));
+
+    const mineralStandard = mineralReference.find(ref => a >= ref.ageMin && a <= ref.ageMax);
+    const mineralValues = mineralStandard ? mineralStandard[gender] : {};
+    const minerals = Object.fromEntries(Object.entries(mineralValues).map(([key, val]) => [key, { perDay: val, perWeek: val * 7 }]));
+
+    setResults({ proteinDay, proteinWeek, fatDay, fatWeek, carbsDay, carbsWeek, aminoAcids, vitamins, minerals });
   };
 
   return (
@@ -115,29 +85,32 @@ function App() {
       <button onClick={calculateNutrition}>計算する</button>
 
       {results && (
-        <>
-          <h2>推定される必要摂取量</h2>
+        <div className="results">
+          <h2>推定される必要栄養素</h2>
           <ul>
             <li>タンパク質: {results.proteinDay.toFixed(1)} g / 日・{results.proteinWeek.toFixed(1)} g / 週</li>
             <li>脂質: {results.fatDay.toFixed(1)} g / 日・{results.fatWeek.toFixed(1)} g / 週</li>
             <li>炭水化物: {results.carbsDay.toFixed(1)} g / 日・{results.carbsWeek.toFixed(1)} g / 週</li>
           </ul>
-          <h3>実際の1日あたり摂取量（仮入力）</h3>
-          <div>
-            <label>タンパク質（g）</label>
-            <input type="number" value={intake.protein} onChange={(e) => setIntake({ ...intake, protein: e.target.value })} />
-          </div>
-          <div>
-            <label>脂質（g）</label>
-            <input type="number" value={intake.fat} onChange={(e) => setIntake({ ...intake, fat: e.target.value })} />
-          </div>
-          <div>
-            <label>炭水化物（g）</label>
-            <input type="number" value={intake.carbs} onChange={(e) => setIntake({ ...intake, carbs: e.target.value })} />
-          </div>
-          <h3>摂取量（1週間）と必要量の比較</h3>
-          {renderGraph()}
-        </>
+          <h3>必須アミノ酸（mg）</h3>
+          <ul>
+            {Object.entries(results.aminoAcids).map(([name, val]) => (
+              <li key={name}>{aminoAcidNames[name] || name}：{val.perDay.toFixed(1)} mg / 日・{val.perWeek.toFixed(1)} mg / 週</li>
+            ))}
+          </ul>
+          <h3>ビタミン必要量</h3>
+          <ul>
+            {Object.entries(results.vitamins).map(([name, val]) => (
+              <li key={name}>ビタミン{name}：{val.perDay}{vitaminUnit[name]} / 日・{val.perWeek}{vitaminUnit[name]} / 週</li>
+            ))}
+          </ul>
+          <h3>ミネラル必要量</h3>
+          <ul>
+            {Object.entries(results.minerals).map(([name, val]) => (
+              <li key={name}>{name}：{val.perDay}{mineralUnit[name]} / 日・{val.perWeek}{mineralUnit[name]} / 週</li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );
