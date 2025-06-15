@@ -24,14 +24,14 @@ const aminoAcidReference = [
 ];
 
 const vitaminReference = [
-  { ageMin: 1, ageMax: 2, male: { A: 400, D: 3, E: 3, K: 50, B1: 0.5, B2: 0.6, C: 40 }, female: { A: 350, D: 3.5, E: 3, K: 60, B1: 0.5, B2: 0.5, C: 40 } },
-  { ageMin: 3, ageMax: 5, male: { A: 450, D: 3.5, E: 4, K: 60, B1: 0.7, B2: 0.8, C: 50 }, female: { A: 400, D: 4, E: 4, K: 70, B1: 0.7, B2: 0.8, C: 50 } },
-  { ageMin: 6, ageMax: 7, male: { A: 600, D: 4.5, E: 5, K: 80, B1: 0.8, B2: 0.9, C: 60 }, female: { A: 550, D: 5, E: 5, K: 90, B1: 0.8, B2: 0.9, C: 60 } },
-  { ageMin: 8, ageMax: 9, male: { A: 600, D: 5, E: 5, K: 90, B1: 1.0, B2: 1.1, C: 70 }, female: { A: 550, D: 6, E: 5, K: 110, B1: 0.9, B2: 1.0, C: 70 } },
-  { ageMin: 10, ageMax: 11, male: { A: 600, D: 6.5, E: 5.5, K: 110, B1: 1.2, B2: 1.4, C: 85 }, female: { A: 550, D: 8, E: 5.5, K: 140, B1: 1.1, B2: 1.3, C: 85 } },
-  { ageMin: 12, ageMax: 14, male: { A: 800, D: 8, E: 6.5, K: 140, B1: 1.4, B2: 1.6, C: 100 }, female: { A: 700, D: 9.5, E: 6, K: 170, B1: 1.3, B2: 1.4, C: 100 } },
-  { ageMin: 15, ageMax: 17, male: { A: 900, D: 9, E: 7, K: 160, B1: 1.5, B2: 1.7, C: 100 }, female: { A: 650, D: 8.5, E: 5.5, K: 150, B1: 1.2, B2: 1.4, C: 100 } },
-  { ageMin: 18, ageMax: 120, male: { A: 900, D: 8.5, E: 6, K: 150, B1: 1.2, B2: 1.6, C: 100 }, female: { A: 700, D: 8.5, E: 5.5, K: 150, B1: 1.1, B2: 1.2, C: 100 } }
+  { ageMin: 1, ageMax: 2, male: { A: 400, D: 3, E: 3, K: 50, B1: 0.5, B2: 0.6, C: 40, B3: 6, B6: 0.5, B12: 0.9, B9: 90, B5: 3, H: 20 }, female: { A: 350, D: 3.5, E: 3, K: 60, B1: 0.5, B2: 0.5, C: 40, B3: 5, B6: 0.5, B12: 0.9, B9: 90, B5: 4, H: 20 } },
+  { ageMin: 3, ageMax: 5, male: { A: 450, D: 3.5, E: 4, K: 60, B1: 0.7, B2: 0.8, C: 50, B3: 8, B6: 0.6, B12: 1.1, B9: 110, B5: 4, H: 20 }, female: { A: 400, D: 4, E: 4, K: 70, B1: 0.7, B2: 0.8, C: 50, B3: 7, B6: 0.6, B12: 1.1, B9: 110, B5: 4, H: 20 } },
+  { ageMin: 6, ageMax: 7, male: { A: 600, D: 4.5, E: 5, K: 80, B1: 0.8, B2: 0.9, C: 60, B3: 9, B6: 0.8, B12: 1.3, B9: 140, B5: 5, H: 30 }, female: { A: 550, D: 5, E: 5, K: 90, B1: 0.8, B2: 0.9, C: 60, B3: 8, B6: 0.7, B12: 1.3, B9: 140, B5: 5, H: 30 } },
+  { ageMin: 8, ageMax: 9, male: { A: 600, D: 5, E: 5, K: 90, B1: 1.0, B2: 1.1, C: 70, B3: 11, B6: 0.9, B12: 1.6, B9: 160, B5: 6, H: 30 }, female: { A: 550, D: 6, E: 5, K: 110, B1: 0.9, B2: 1.0, C: 70, B3: 10, B6: 0.9, B12: 1.6, B9: 160, B5: 6, H: 30 } },
+  { ageMin: 10, ageMax: 11, male: { A: 600, D: 6.5, E: 5.5, K: 110, B1: 1.2, B2: 1.4, C: 85, B3: 13, B6: 1.1, B12: 1.9, B9: 200, B5: 6, H: 40 }, female: { A: 550, D: 8, E: 5.5, K: 140, B1: 1.1, B2: 1.3, C: 85, B3: 12, B6: 1.1, B12: 1.9, B9: 200, B5: 6, H: 40 } },
+  { ageMin: 12, ageMax: 14, male: { A: 800, D: 8, E: 6.5, K: 140, B1: 1.4, B2: 1.6, C: 100, B3: 15, B6: 1.4, B12: 2.4, B9: 240, B5: 7, H: 50 }, female: { A: 700, D: 9.5, E: 6, K: 170, B1: 1.3, B2: 1.4, C: 100, B3: 14, B6: 1.3, B12: 2.4, B9: 240, B5: 6, H: 50 } },
+  { ageMin: 15, ageMax: 17, male: { A: 900, D: 9, E: 7, K: 160, B1: 1.5, B2: 1.7, C: 100, B3: 17, B6: 1.5, B12: 2.4, B9: 240, B5: 7, H: 50 }, female: { A: 650, D: 8.5, E: 5.5, K: 150, B1: 1.2, B2: 1.4, C: 100, B3: 13, B6: 1.3, B12: 2.4, B9: 240, B5: 6, H: 50 } },
+  { ageMin: 18, ageMax: 120, male: { A: 900, D: 8.5, E: 6, K: 150, B1: 1.2, B2: 1.6, C: 100, B3: 15, B6: 1.4, B12: 2.4, B9: 240, B5: 5, H: 50 }, female: { A: 700, D: 8.5, E: 5.5, K: 150, B1: 1.1, B2: 1.2, C: 100, B3: 12, B6: 1.1, B12: 2.4, B9: 240, B5: 5, H: 50 } }
 ];
 
 function App() {
@@ -115,7 +115,7 @@ function App() {
           <h3>ビタミン必要量</h3>
           <ul>
             {Object.entries(results.vitamins).map(([name, val]) => (
-              <li key={name}>ビタミン{name}：{val.perDay}{name === 'A' || name === 'K' || name === 'B12' ? 'μg' : 'mg'} / 日・{val.perWeek}{name === 'A' || name === 'K' || name === 'B12' ? 'μg' : 'mg'} / 週</li>
+              <li key={name}>ビタミン{name}：{val.perDay}{name === 'A' || name === 'K' || name === 'B12' || name === 'H' ? 'μg' : 'mg'} / 日・{val.perWeek}{name === 'A' || name === 'K' || name === 'B12' || name === 'H' ? 'μg' : 'mg'} / 週</li>
             ))}
           </ul>
         </div>
