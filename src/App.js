@@ -1,6 +1,8 @@
 // src/App.js
 import React, { useState } from 'react';
 import './App.css';
+import { vitaminReference } from './data/vitamins';
+import { mineralReference } from './data/minerals';
 
 const aminoAcidNames = {
   histidine: 'ヒスチジン', isoleucine: 'イソロイシン', leucine: 'ロイシン', lysine: 'リシン',
@@ -19,9 +21,6 @@ const aminoAcidReference = [
   { ageMin: 15, ageMax: 17, data: { histidine: 11, isoleucine: 21, leucine: 42, lysine: 33, methionine: 16, phenylalanine: 28, threonine: 17, tryptophan: 4.5, valine: 28 } },
   { ageMin: 18, ageMax: 120, data: { histidine: 10, isoleucine: 20, leucine: 39, lysine: 30, methionine: 15, phenylalanine: 25, threonine: 15, tryptophan: 4.0, valine: 26 } },
 ];
-
-import { vitaminReference } from './data/vitamins';
-import { mineralReference } from './data/minerals';
 
 function App() {
   const [gender, setGender] = useState('male');
