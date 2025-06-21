@@ -10,6 +10,8 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.
 import annotationPlugin from 'chartjs-plugin-annotation';
 import FoodSearch from './components/FoodSearch';
 import NutritionGraph from './components/NutritionGraph';
+import foodData from './data/foodData.json';
+
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, annotationPlugin);
 
@@ -110,13 +112,8 @@ function App() {
           </ul>
 
           <NutritionGraph results={results} intake={intake} />
-          <FoodSearch
-            foodData={[
-              { name: '鶏むね肉', protein: 23, fat: 1.9, carbs: 0 },
-              { name: '白米', protein: 2.5, fat: 0.3, carbs: 37.1 }
-            ]}
-            onAddFoods={handleAddFoods}
-          />
+          <FoodSearch foodData={foodData} onAddFoods={handleAddFoods} />
+
 
 
         </>
