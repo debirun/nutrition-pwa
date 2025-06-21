@@ -59,6 +59,22 @@ function App() {
     setResults({ proteinDay, proteinWeek, fatDay, fatWeek, carbsDay, carbsWeek });
   };
 
+  const handleAddFoods = (foods) => {
+    const total = foods.reduce(
+      (acc, item) => ({
+        protein: acc.protein + (item.protein || 0),
+        fat: acc.fat + (item.fat || 0),
+        carbs: acc.carbs + (item.carbs || 0),
+      }),
+      { protein: 0, fat: 0, carbs: 0 }
+    );
+    setIntake(prev => ({
+      protein: prev.protein + total.protein,
+      fat: prev.fat + total.fat,
+      carbs: prev.carbs + total.carbs,
+    }));
+  };  
+
   return (
     <div className="App">
       <h1>1週間の栄養素計算</h1>
@@ -98,11 +114,9 @@ function App() {
               { name: '鶏むね肉', protein: 23, fat: 1.9, carbs: 0 },
               { name: '白米', protein: 2.5, fat: 0.3, carbs: 37.1 }
             ]}
-            onAddFoods={(foods) => {
-              console.log('追加された食材:', foods);
-              // intakeの加算処理を後でここに書きます
-            }}
+            onAddFoods={handleAddFoods}
           />
+
 
         </>
       )}
