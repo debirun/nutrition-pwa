@@ -37,7 +37,8 @@ function App() {
   const [height, setHeight] = useState('');
   const [age, setAge] = useState('');
   const [results, setResults] = useState(null);
-  const [intake, setIntake] = useState({ protein: '', fat: '', carbs: '' });
+  const [intake, setIntake] = useState({ protein: 0, fat: 0, carbs: 0 });
+
 
   const calculateNutrition = () => {
     const w = parseFloat(weight);
