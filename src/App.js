@@ -115,7 +115,7 @@ function App() {
           </ul>
 
           <NutritionGraph results={results} intake={intake} />
-          <FoodSelector />
+          <FoodSearch foodData={foodData} onAddFoods={handleAddFoods} />
         </>
       )}
     </div>
