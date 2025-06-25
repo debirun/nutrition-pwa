@@ -1,17 +1,15 @@
 // このCanvasには src/App.js の内容だけを保持します。その他のファイルは別Canvasで管理します。
 
 // src/App.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { vitaminReference } from './data/vitamins';
 import { mineralReference } from './data/minerals';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
-import FoodSearch from './components/FoodSearch';
+import FoodSelector from './components/FoodSelector';
 import NutritionGraph from './components/NutritionGraph';
-import foodData from './data/foodData.json';
-
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, annotationPlugin);
 
@@ -39,8 +37,29 @@ function App() {
   const [height, setHeight] = useState('');
   const [age, setAge] = useState('');
   const [results, setResults] = useState(null);
-  const [intake, setIntake] = useState({ protein: 0, fat: 0, carbs: 0 });
+  const [intake, setIntake] = useState({ protein: '', fat: '', carbs: '' });
 
+  // 初期化時に保存された値を読み込む
+  useEffect(() => {
+    const savedGender = localStorage.getItem('gender');
+    const savedWeight = localStorage.getItem('weight');
+    const savedHeight = localStorage.getItem('height');
+    const savedAge = localStorage.getItem('age');
+    const savedIntake = JSON.parse(localStorage.getItem('intake'));
+
+    if (savedGender) setGender(savedGender);
+    if (savedWeight) setWeight(savedWeight);
+    if (savedHeight) setHeight(savedHeight);
+    if (savedAge) setAge(savedAge);
+    if (savedIntake) setIntake(savedIntake);
+  }, []);
+
+  // 各入力を保存
+  useEffect(() => { localStorage.setItem('gender', gender); }, [gender]);
+  useEffect(() => { localStorage.setItem('weight', weight); }, [weight]);
+  useEffect(() => { localStorage.setItem('height', height); }, [height]);
+  useEffect(() => { localStorage.setItem('age', age); }, [age]);
+  useEffect(() => { localStorage.setItem('intake', JSON.stringify(intake)); }, [intake]);
 
   const calculateNutrition = () => {
     const w = parseFloat(weight);
@@ -61,22 +80,6 @@ function App() {
 
     setResults({ proteinDay, proteinWeek, fatDay, fatWeek, carbsDay, carbsWeek });
   };
-
-  const handleAddFoods = (foods) => {
-    const total = foods.reduce(
-      (acc, item) => ({
-        protein: acc.protein + (item.protein || 0),
-        fat: acc.fat + (item.fat || 0),
-        carbs: acc.carbs + (item.carbs || 0),
-      }),
-      { protein: 0, fat: 0, carbs: 0 }
-    );
-    setIntake(prev => ({
-      protein: prev.protein + total.protein,
-      fat: prev.fat + total.fat,
-      carbs: prev.carbs + total.carbs,
-    }));
-  };  
 
   return (
     <div className="App">
@@ -112,10 +115,7 @@ function App() {
           </ul>
 
           <NutritionGraph results={results} intake={intake} />
-          <FoodSearch foodData={foodData} onAddFoods={handleAddFoods} />
-
-
-
+          <FoodSelector />
         </>
       )}
     </div>
